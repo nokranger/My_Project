@@ -1,0 +1,223 @@
+﻿#include <Wire.h> 
+#include <LiquidCrystal_I2C.h> //ประกาศ Library ของจอ I2C
+// Set the LCD address to 0x27 for a 16 chars and 2 line display
+LiquidCrystal_I2C lcd(0x3F, 20, 4);
+
+#define MAX 3 
+#define MIN 1 
+int ledPin = 7; // choose the pin for the LED
+int buttonPin = 6;   // choose the input pin (for a pushbutton) 
+int buttonPin2 = 5;   // choose the input pin (for a pushbutton)
+int buttonEnterPin = 4;   // choose the input pin (for a pushbutton)
+int checkP1,checkP2,enter = 0;     // variable for reading the pin status
+int sum = 1;
+int index = 1;
+int menuchem=1;
+bool checksum;
+/*bool isInStage_choose_chemecals ;
+enum Stage {
+  none,
+  display_sg,
+  display_times,
+  choose_chemecals
+};
+Stage curStage ;*/
+
+void setup() {
+  setupPin();  
+}
+
+void loop(){    
+  digitalPin();
+  if (checkP1 == HIGH) {         // check if the input is HIGH (button released)
+    Serial.print("Val P1 : ");
+    Serial.println(checkP1);
+    digitalWrite(ledPin,HIGH);  // turn LED ON
+    checksum = true;
+    delay(50);
+    //checksum = true;
+  } else {
+    digitalWrite(ledPin, LOW);  // turn LED OFF
+    Serial.print("Val P1 : ");
+    Serial.println(checkP1);
+    if(checksum){  
+      if(sum<MAX){
+          sum++;               
+          //checksum=false;
+        }
+      checksum=false;      
+    }  
+  }    
+  if (checkP2 == HIGH) {         // check if the input is HIGH (button released)
+    Serial.print("Val P2 : ");
+    Serial.println(checkP2);
+    digitalWrite(ledPin,HIGH);  // turn LED ON
+    checksum = true;
+    delay(50);
+    //checksum = true;
+  } else {
+    digitalWrite(ledPin, LOW);  // turn LED OFF
+    Serial.print("Val P2 : ");
+    Serial.println(checkP2);
+    if(checksum){    
+      if(sum>MIN){
+        sum--;
+        //checksum=false;
+        }
+      checksum=false;
+    }        
+  }
+Serial.print("sumary:");
+Serial.println(sum);    
+
+    if(sum==1){
+        MenuList_1();
+          }else{
+            if(sum==2){
+                MenuList_2();        
+                  }else{
+                    if(sum==3){
+                        MenuList_3();           
+         }
+      }
+    }
+
+    
+    /*if(enter == HIGH){
+      Serial.print("enter : ");
+      Serial.println(enter);
+      delay(50);
+      switch(sum){
+        case 1:
+              break;
+        case 2:
+              if(sum==2){
+                lcd.clear();
+                sum = 0;
+                }
+                MenuChemicalList_1();              
+              break;
+        case 3:
+              break;
+        }
+      }*/
+}
+
+void MenuList_0(){          
+          lcd.print("--Specific gravity--");
+          lcd.print("");
+          lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor  
+          lcd.print("SG : ");
+          //lcd.print(sgval);
+          lcd.print("");
+          lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor  
+          lcd.print("% Boron : ");
+          //lcd.print(boronval);
+          lcd.print(" %");
+                    lcd.print("                    ");
+          lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor 
+          lcd.print("Solenoid valve Close");
+                    lcd.print("                    ");
+          lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          //lcd.clear(); 
+  }  
+void MenuList_1(){          
+          lcd.print("-----Menu  List-----");
+          lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          lcd.print("- 1.Setting Working");
+          lcd.print("");
+          lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("2.Choose chemical");
+          lcd.print("  ");
+          lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("3.Exit");
+          lcd.print("  ");
+          lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          //lcd.clear(); 
+  }
+void MenuList_2(){         
+         lcd.print("-----Menu  List-----");
+         lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+         lcd.print("1.Setting Working");
+         lcd.print("  ");
+         lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+         lcd.print("- 2.Choose chemical");
+         lcd.print("");
+         lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+         lcd.print("3.Exit");
+         lcd.print("  ");
+         lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+         //lcd.clear(); 
+  }
+void MenuList_3(){          
+          lcd.print("-----Menu  List-----");
+          lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          lcd.print("1.Setting Working");
+          lcd.print("  ");
+          lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("2.Choose chemical");
+          lcd.print("  ");
+          lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("- 3.Exit");
+          lcd.print("");
+          lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          //lcd.clear(); 
+  }
+void MenuChemicalList_1(){
+          lcd.print("---Chemical  List---");
+          lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          lcd.print("- 1.Chemical A");
+          lcd.print("");
+          lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("2.Chemical B");
+          lcd.print("  ");
+          lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("3.Chemical C");
+          lcd.print("  ");
+          lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor 
+  }
+void MenuChemicalList_2(){
+          lcd.print("---Chemical  List---");
+          lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          lcd.print("1.Chemical A");
+          lcd.print("  ");
+          lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("- 2.Chemical B");
+          lcd.print("");
+          lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("3.Chemical C");
+          lcd.print("  ");
+          lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor 
+  }
+void MenuChemicalList_3(){
+          lcd.print("---Chemical  List---");
+          lcd.setCursor(0, 1); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor
+          lcd.print("1.Chemical A");
+          lcd.print("  ");
+          lcd.setCursor(0, 2); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("2.Chemical B");
+          lcd.print("  ");
+          lcd.setCursor(0, 3); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor   
+          lcd.print("- 3.Exit");
+          lcd.print("");
+          lcd.setCursor(0, 4); //ฟังก์ชั่นในการกำหนดตำแหน่ง Cursor 
+  }
+
+void setupPin(){
+  lcd.begin();
+  //curStage = none ;
+  pinMode(ledPin, OUTPUT);  // declare LED as output
+  //pinMode(ledPin2, OUTPUT);  // declare LED as output
+  //pinMode(ledPin3, OUTPUT);  // declare LED as output
+  pinMode(buttonPin, INPUT);    // declare pushbutton as input
+  pinMode(buttonPin2, INPUT);    // declare pushbutton as input
+  pinMode(buttonEnterPin, INPUT);    // declare pushbutton as input
+  Serial.begin(9600);
+  checksum = false;
+  //isInStage_choose_chemecals = false ;
+  }
+void digitalPin(){
+  checkP1 = digitalRead(buttonPin);  // read input value
+  checkP2 = digitalRead(buttonPin2);  // read input value
+  enter = digitalRead(buttonEnterPin);  // read input value  
+  }
