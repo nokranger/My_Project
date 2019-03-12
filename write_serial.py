@@ -4,6 +4,7 @@
 import time
 
 from time import sleep
+
 #ser = serial.Serial('/dev/ttyACM1');#ACM0 or ACM1 = port USB Serial
 #ser.close()
 #ser.open()
