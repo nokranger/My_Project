@@ -10,8 +10,9 @@ class Main():
         self.page=StringVar()
         self.loginName = StringVar()
         self.loginPass = StringVar()
-        self.signinName = StringVar()
+        self.signinUName = StringVar()
         self.signinPass = StringVar()
+        self.signinName = StringVar()
         self.sts = StringVar()
         
         self.createWidgets()
@@ -29,18 +30,24 @@ class Main():
         frame1.pack(padx=10,pady=10)
         
         frame2 = Frame(self.parent)
-        Label(frame2,text = "Name").grid(sticky = W)
-        Entry(frame2,textvariable = self.signinName).grid(row =0,column =1,pady=10,padx=10)
+        Label(frame2,text = "Username").grid(sticky = W)
+        Entry(frame2,textvariable = self.signinUName).grid(row =0,column =1,pady=10,padx=10)
         Label(frame2,text = "Password").grid(sticky = W)
         Entry(frame2,textvariable = self.signinPass,show="*").grid(row =1,column =1)
+        Label(frame2,text = "Name").grid(sticky = W)
+        Entry(frame2,textvariable = self.signinName).grid(row =2,column =1,pady=10,padx=10)
         Button(frame2,text="Create",command=self.create).grid(pady=10)
-        Button(frame2,text="Back",command=self.showLogin).grid(row=2,column=1,pady=10)
+        Button(frame2,text="Back",command=self.showLogin).grid(row=3,column=1,pady=10)
         
         frame3 = Frame(self.parent)
-        Label(frame3,text="Loged In",font=("",50)).pack(padx = 10,pady = 10)
+        Label(frame3,text="Loged In",font=("",10)).pack(padx = 10,pady = 10)
+        #Button(frame3,text="Log out",command=self.showLogin).grid(row=3,column=1,pady=10)
+        #Button(frame3,text="Log Out",command=self.showLogin).grid(row=3,column=1,pady=10)
+        
+        
         self.loginFrame = frame1
         self.signinFrame = frame2
-        self.logedFrame = frame3
+        self.logedFrame = frame3        
         Label(self.parent,textvariable = self.sts).pack()
         
     def login(self):
@@ -78,14 +85,16 @@ class Main():
         self.loginFrame.pack()
 
     def showLoged(self):
+        self.page.set("Login by ...")
         self.loginFrame.pack_forget()
         self.logedFrame.pack()
         
     def create(self):
-        name = self.signinName.get()
+        Uname = self.signinUName.get()
         password = self.signinPass.get()
+        name = self.signinName.get()
         f = open("savedata.txt","a+")
-        text = ("{0},{1}".format(name,password))
+        text = ("{0},{1},{2}".format(Uname,password,name))
         f.write(text+'\n')
         f.close()
         self.showLogin()
