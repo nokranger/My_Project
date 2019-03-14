@@ -15,27 +15,31 @@ def thread_1():
             time.sleep(2)
             print("thread 1")
             read = ser.readline().decode().strip('\r\n');
-            print(read)
+            print("READ : " + read)
             readlist = read
             readlist = list(readlist)
-            print(readlist[0])
-        if(read == "Sta1"):
+            print(readlist[6])
+        if(read == "AD1 + S1"):
             status = read
-            print(status)
-        elif(readlist[0] == "A"):
+            print("S : " + status)
+        elif(readlist[6] == "D"):
             processes = read
-            print(processes)
-        elif(read == "S1OFF + S2ON"):
+            print("p : " + processes)
+        elif(read == "AD1 + S1OFF + S2ON"):
             endprocess = read
-            print(endprocess)
-        elif(read == "END"):
+            print("ee : " + endprocess)
+        elif(read == "AD1 + S1OFF + S2OFF"):
+            endprocess_2 = read
+            print("ee2 : " + endprocess_2)
+        elif(read == "AD1 + END"):
             end = read
-            print(end)
+            print("e : " + end)
             data['AD1'].append({
                 'status' : status,
                 'process' : processes,
-                'end' : end,
-                'endprocess' : endprocess
+                'process_2' : endprocess_2,
+                'endprocess' : endprocess,
+                'end' : end
             })
             with open('data.json','w+') as outfile:
                 json.dump(data,outfile)
@@ -50,11 +54,20 @@ def thread_2():
             #thread.start_new_thread(thread_1())
 def thread_3():
     while True:
-        print('1')
+            print("thread 3")
+            ser.write("AD2 + ST" + "\r\n")
+            time.sleep(3)
 
 def thread_4():
     while True:
-        print('2')
+            print("thread 4")
+            ser.write("AD1 + R" + "\r\n")
+            time.sleep(3)
+def thread_5():
+    while True:
+            print("thread 5")
+            ser.write("AD2 + R" + "\r\n")
+            time.sleep(3)
 
 thread.start_new_thread(thread_1,())
 thread.start_new_thread(thread_2,())
