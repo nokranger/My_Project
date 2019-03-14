@@ -52,6 +52,7 @@ def thread_2():
             ser.write("AD1 + ST" + "\r\n")
             time.sleep(3)
             #thread.start_new_thread(thread_1())
+            
 def thread_3():
     while True:
             print("thread 3")
