@@ -106,3 +106,4 @@ if __name__ == "__main__":
     labels.pack()
     Main(root)
     root.mainloop()
+    
